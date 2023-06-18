@@ -15,8 +15,8 @@ final class FootballMatchTest extends TestCase
     {
         $footballMatch = new FootballMatch("Team A", "Team B");
 
-        $this->assertSame("Team A", $footballMatch->getHome());
-        $this->assertSame("Team B", $footballMatch->getAway());
+        $this->assertSame("Team A", $footballMatch->getHomeTeam());
+        $this->assertSame("Team B", $footballMatch->getAwayTeam());
         $this->assertSame(0, $footballMatch->getHomeScore());
         $this->assertSame(0, $footballMatch->getAwayScore());
         $this->assertSame(0, $footballMatch->getTotalScore());
@@ -43,6 +43,8 @@ final class FootballMatchTest extends TestCase
         $this->assertSame(1, $updatedMatch->getHomeScore());
         $this->assertSame(3, $updatedMatch->getAwayScore());
         $this->assertSame(4, $updatedMatch->getTotalScore());
+        $this->assertSame("Team A", $updatedMatch->getHomeTeam());
+        $this->assertSame("Team B", $updatedMatch->getAwayTeam());
         $this->assertSame('Team A 1 - Team B 3', (string) $updatedMatch);
     }
 
@@ -61,7 +63,7 @@ final class FootballMatchTest extends TestCase
      */
     function testUpdatingScoreWithInvalidData($exceptionType, $homeScore, $awayScore): void
     {
-        $this->getExpectedException($exceptionType);
+        $this->expectException($exceptionType);
 
         $footballMatch = new FootballMatch("Team A", "Team B");
 
