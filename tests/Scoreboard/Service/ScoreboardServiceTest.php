@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Sportradar\Scoreboard\Repository\MatchRepository;
 use Sportradar\Scoreboard\Service\ScoreboardService;
-use Sportradar\Scoreboard\Model\FootballMatch;
+use Sportradar\Scoreboard\Model\MatchInterface;
 
 /**
  * Testing ScoreboardServiceTest
@@ -17,7 +17,9 @@ final class ScoreboardServiceTest extends TestCase
     {
         /** @var MockObject|MatchRepository */
         $repository = $this->createMock(MatchRepository::class);
-        $match = new FootballMatch('Team A', 'Team B');
+
+        /** @var MockObject|MatchInterface */
+        $match = $this->createMock(MatchInterface::class);
 
         $repository->expects($this->once())
             ->method('store');
@@ -30,7 +32,9 @@ final class ScoreboardServiceTest extends TestCase
     {
         /** @var MockObject|MatchRepository */
         $repository = $this->createMock(MatchRepository::class);
-        $match = new FootballMatch('Team A', 'Team B');
+
+        /** @var MockObject|MatchInterface */
+        $match = $this->createMock(MatchInterface::class);
 
         $repository->expects($this->once())
             ->method('update');
@@ -43,7 +47,10 @@ final class ScoreboardServiceTest extends TestCase
     {
         /** @var MockObject|MatchRepository */
         $repository = $this->createMock(MatchRepository::class);
-        $match = new FootballMatch('Team A', 'Team B');
+
+        /** @var MockObject|MatchInterface */
+        $match = $this->createMock(MatchInterface::class);
+
 
         $repository->expects($this->once())
             ->method('remove');
@@ -56,20 +63,60 @@ final class ScoreboardServiceTest extends TestCase
     {
         /** @var MockObject|MatchRepository */
         $repository = $this->createMock(MatchRepository::class);
-        $match1 = new FootballMatch('Mexico', 'Canada');
-        $match2 = new FootballMatch('Spain', 'Brazil');
-        $match3 = new FootballMatch('Germany', 'France');
-        $match4 = new FootballMatch('Uruguay', 'Italy');
-        $match5 = new FootballMatch('Argentina', 'Australia');
+
+        /** @var MockObject|MatchInterface */
+        $match1 = $this->createMock(MatchInterface::class);
+        $match1->expects($this->any())
+            ->method('__toString')
+            ->willReturn('Mexico 0 - Canada 5');
+        $match1->expects($this->any())
+            ->method('getTotalScore')
+            ->willReturn(5);
+
+        /** @var MockObject|MatchInterface */
+        $match2 = $this->createMock(MatchInterface::class);
+        $match2->expects($this->any())
+            ->method('__toString')
+            ->willReturn('Spain 10 - Brazil 2');
+        $match2->expects($this->any())
+            ->method('getTotalScore')
+            ->willReturn(12);
+
+        /** @var MockObject|MatchInterface */
+        $match3 = $this->createMock(MatchInterface::class);
+        $match3->expects($this->any())
+            ->method('__toString')
+            ->willReturn('Germany 2 - France 2');
+        $match3->expects($this->any())
+            ->method('getTotalScore')
+            ->willReturn(4);
+
+        /** @var MockObject|MatchInterface */
+        $match4 = $this->createMock(MatchInterface::class);
+        $match4->expects($this->any())
+            ->method('__toString')
+            ->willReturn('Uruguay 6 - Italy 6');
+        $match4->expects($this->any())
+            ->method('getTotalScore')
+            ->willReturn(12);
+
+        /** @var MockObject|MatchInterface */
+        $match5 = $this->createMock(MatchInterface::class);
+        $match5->expects($this->any())
+            ->method('__toString')
+            ->willReturn('Argentina 3 - Australia 1');
+        $match5->expects($this->any())
+            ->method('getTotalScore')
+            ->willReturn(4);
 
         $repository->expects($this->once())
             ->method('getItems')
             ->willReturn([
-                $match1->updateScore(0, 5),
-                $match2->updateScore(10, 2),
-                $match3->updateScore(2, 2),
-                $match4->updateScore(6, 6),
-                $match5->updateScore(3, 1),
+                $match1,
+                $match2,
+                $match3,
+                $match4,
+                $match5
             ]);
 
         $service = new ScoreboardService($repository);
