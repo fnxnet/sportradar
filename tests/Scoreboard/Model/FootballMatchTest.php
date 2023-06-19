@@ -23,11 +23,23 @@ final class FootballMatchTest extends TestCase
         $this->assertSame('Team A 0 - Team B 0', (string) $footballMatch);
     }
 
-    function testInitiatingFootballMatchWithInvalidData(): void
+    function invalidTeamNamesProvider()
+    {
+        return [
+            ['Away team can not be the same as home one', 'Team A', 'Team A'],
+            ['Team name can not be empty', 'Team A', ''],
+            ['Team name can not be empty', '', 'Team A'],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidTeamNamesProvider
+     */
+    function testInitiatingFootballMatchWithInvalidData($message, $homeTeam, $awayTeam): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Away team can not be the same as home one');
-        $footballMatch = new FootballMatch("Team A", "Team A");
+        $this->expectExceptionMessage($message);
+        $footballMatch = new FootballMatch($homeTeam, $awayTeam);
     }
 
     function testUpdatingScoreWithValidData(): void
