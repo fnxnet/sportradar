@@ -2,33 +2,36 @@
 
 namespace Sportradar\Scoreboard\Service;
 
-use Sportradar\Scoreboard\Model\FootballMatch;
-use Sportradar\Scoreboard\Repository\MatchRepository;
+use Sportradar\Scoreboard\Model\MatchInterface;
+use Sportradar\Scoreboard\Repository\MatchRepositoryInterface;
 
-class ScoreboardService
+class ScoreboardService implements ScoreboardServiceInterface
 {
-    private MatchRepository $repository;
+    private MatchRepositoryInterface $repository;
 
-    function __construct(MatchRepository $repository)
+    function __construct(MatchRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
 
-    function start(FootballMatch $match): void
+    function start(MatchInterface $match): void
     {
         $this->repository->store($match);
     }
 
-    function stop(FootballMatch $match): void
+    function stop(MatchInterface $match): void
     {
         $this->repository->remove($match);
     }
 
-    function update(FootballMatch $match): void
+    function update(MatchInterface $match): void
     {
         $this->repository->update($match);
     }
 
+    /**
+     * @return MatchInterface[]
+     */
     function getSummary(): array
     {
         $items = $this->repository->getItems();

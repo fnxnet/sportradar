@@ -2,7 +2,9 @@
 
 namespace Sportradar\Scoreboard\Model;
 
-class FootballMatch
+use Sportradar\Scoreboard\Model\MatchInterface;
+
+class FootballMatch implements MatchInterface
 {
 
     private string $homeTeam = '';
@@ -49,7 +51,7 @@ class FootballMatch
         return $this->homeScore + $this->awayScore;
     }
 
-    function updateScore(int $homeScore, int $awayScore): FootballMatch
+    function updateScore(int $homeScore, int $awayScore): MatchInterface
     {
         if ($homeScore < 0 || $awayScore < 0) {
             throw new \RuntimeException("Score can not be negative");

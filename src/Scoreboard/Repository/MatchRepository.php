@@ -2,9 +2,9 @@
 
 namespace Sportradar\Scoreboard\Repository;
 
-use Sportradar\Scoreboard\Model\FootballMatch;
+use Sportradar\Scoreboard\Model\MatchInterface;
 
-class MatchRepository
+class MatchRepository implements MatchRepositoryInterface
 {
 
     private array $items = [];
@@ -14,7 +14,7 @@ class MatchRepository
         return $this->items;
     }
 
-    function getMatch(FootballMatch $match): FootballMatch
+    function getMatch(MatchInterface $match): MatchInterface
     {
         foreach ($this->items as $item) {
             if ($item->getHomeTeam() == $match->getHomeTeam() && $item->getAwayTeam() == $match->getAwayTeam()) {
@@ -28,7 +28,7 @@ class MatchRepository
     /**
      * @throws DuplicateException
      */
-    function store(FootballMatch $match): void
+    function store(MatchInterface $match): void
     {
         $homeTeam = $match->getHomeTeam();
         $awayTeam = $match->getAwayTeam();
@@ -46,7 +46,7 @@ class MatchRepository
         array_push($this->items, $match);
     }
 
-    function remove(FootballMatch $match): void
+    function remove(MatchInterface $match): void
     {
         foreach ($this->items as $key => $item) {
             if ($match->getHomeTeam() == $item->getHomeTeam() && $match->getAwayTeam() == $item->getAwayTeam()) {
@@ -55,7 +55,7 @@ class MatchRepository
         }
     }
 
-    function update(FootballMatch $match): void
+    function update(MatchInterface $match): void
     {
         // will throw NonFoundException if not found
         $this->getMatch($match);
