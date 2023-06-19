@@ -57,7 +57,7 @@ final class ScoreboardServiceTest extends TestCase
         /** @var MockObject|MatchRepository */
         $repository = $this->createMock(MatchRepository::class);
         $match1 = new FootballMatch('Mexico', 'Canada');
-        $match2 = new FootballMatch('Spain', 'Brasil');
+        $match2 = new FootballMatch('Spain', 'Brazil');
         $match3 = new FootballMatch('Germany', 'France');
         $match4 = new FootballMatch('Uruguay', 'Italy');
         $match5 = new FootballMatch('Argentina', 'Australia');
