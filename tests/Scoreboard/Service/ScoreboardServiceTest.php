@@ -19,39 +19,42 @@ final class ScoreboardServiceTest extends TestCase
         $repository = $this->createMock(MatchRepository::class);
         $match = new FootballMatch('Team A', 'Team B');
 
-        $service = new ScoreboardService($repository);
-        $service->start($match);
-
         $repository->expects($this->once())
             ->method('store');
+
+        $service = new ScoreboardService($repository);
+        $service->start($match);
     }
 
     function testUpdatingMatch()
     {
+        /** @var MockObject|MatchRepository */
         $repository = $this->createMock(MatchRepository::class);
         $match = new FootballMatch('Team A', 'Team B');
 
-        $service = new ScoreboardService($repository);
-        $service->update($match);
-
         $repository->expects($this->once())
             ->method('update');
+
+        $service = new ScoreboardService($repository);
+        $service->update($match);
     }
 
     function testStoppingMatch()
     {
+        /** @var MockObject|MatchRepository */
         $repository = $this->createMock(MatchRepository::class);
         $match = new FootballMatch('Team A', 'Team B');
 
-        $service = new ScoreboardService($repository);
-        $service->stop($match);
-
         $repository->expects($this->once())
             ->method('remove');
+
+        $service = new ScoreboardService($repository);
+        $service->stop($match);
     }
 
     function testGettingSummary()
     {
+        /** @var MockObject|MatchRepository */
         $repository = $this->createMock(MatchRepository::class);
         $match1 = new FootballMatch('Mexico', 'Canada');
         $match2 = new FootballMatch('Spain', 'Brasil');
@@ -72,10 +75,10 @@ final class ScoreboardServiceTest extends TestCase
         $service = new ScoreboardService($repository);
         $summary = $service->getSummary();
 
-        $this->assertSame('Uruguay 6 - Italy 6', $summary[0]);
-        $this->assertSame('Spain 10 - Brazil 2', $summary[1]);
-        $this->assertSame('Mexico 0 - Canada 5', $summary[2]);
-        $this->assertSame('Argentina 3 - Australia 1', $summary[3]);
-        $this->assertSame('Germany 2 - France 2', $summary[4]);
+        $this->assertSame('Uruguay 6 - Italy 6', (string)$summary[0]);
+        $this->assertSame('Spain 10 - Brazil 2', (string)$summary[1]);
+        $this->assertSame('Mexico 0 - Canada 5', (string)$summary[2]);
+        $this->assertSame('Argentina 3 - Australia 1', (string)$summary[3]);
+        $this->assertSame('Germany 2 - France 2', (string)$summary[4]);
     }
 }

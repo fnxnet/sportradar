@@ -16,6 +16,10 @@ class FootballMatch
             throw new \RuntimeException("Away team can not be the same as home one");
         }
 
+        if (strlen($homeTeam) == 0 || strlen($awayTeam) == 0) {
+            throw new \RuntimeException("Team name can not be empty");
+        }
+
         $this->homeTeam = $homeTeam;
         $this->awayTeam = $awayTeam;
     }
